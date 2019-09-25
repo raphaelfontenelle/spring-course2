@@ -1,4 +1,4 @@
-package com.springcourse.repository;
+package com.spring.course.repository;
 
 import java.util.Optional;
 
@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.spring.course.domain.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
-	@Query("SELECT FROM User WHERE email = ?1 AND password = ?2")
-	public Optional<User> login(String name, String password);
-	
+	@Query("SELECT u FROM user u WHERE email = :email AND password = :password")
+	public Optional<User> login(String email, String password);
 	
 }
