@@ -11,7 +11,7 @@ import com.spring.course.domain.RequestStage;
 import com.spring.course.enums.RequestState;
 
 @Repository
-public interface RequestSatageRepository extends JpaRepository<RequestStage, Long>{
+public interface RequestStageRepository extends JpaRepository<RequestStage, Long>{
 
 	public List<RequestStage> findAllByRequest(Long id);
 	
