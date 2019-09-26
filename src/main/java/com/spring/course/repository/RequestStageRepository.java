@@ -13,7 +13,7 @@ import com.spring.course.enums.RequestState;
 @Repository
 public interface RequestStageRepository extends JpaRepository<RequestStage, Long>{
 
-	public List<RequestStage> findAllByRequest(Long id);
+	public List<RequestStage> findAllByRequestId(Long id);
 	
 	@Query("UPDATE request SET state = :state WHERE id = :id")
 	public Request updateStatus(Long id, RequestState state);
