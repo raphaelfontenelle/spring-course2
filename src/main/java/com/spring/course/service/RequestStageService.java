@@ -13,7 +13,7 @@ import com.spring.course.repository.RequestRepository;
 import com.spring.course.repository.RequestStageRepository;
 
 @Service
-public class RequestStateService {
+public class RequestStageService {
 
 	
 	@Autowired
