@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.course.domain.Request;
 import com.spring.course.domain.RequestStage;
 import com.spring.course.service.RequestService;
 import com.spring.course.service.RequestStageService;
@@ -29,6 +30,13 @@ public class RequestStageResource {
 		RequestStage createdRequestStage = stageService.save(requestStage);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdRequestStage);
 		}
+	
+	@GetMapping 
+	public ResponseEntity<List<Request>> listAll(){
+		
+		List<Request> requests = requestService.listAll();
+		return ResponseEntity.ok(requests);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<RequestStage> getById(@PathVariable(name = "id") Long id){
