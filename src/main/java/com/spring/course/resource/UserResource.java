@@ -1,7 +1,5 @@
 package com.spring.course.resource;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.course.domain.Request;
 import com.spring.course.domain.User;
 import com.spring.course.dto.UserLogindto;
+import com.spring.course.model.PageModel;
+import com.spring.course.model.PageRequestModel;
 import com.spring.course.service.RequestService;
 import com.spring.course.service.UserService;
 
@@ -58,11 +59,15 @@ public class UserResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> listAll(){
+	public ResponseEntity<PageModel<User>> listAll(
+			@RequestParam(value = "page") int page, 
+			@RequestParam(value = "size") int size){
 	
-		List<User> users = userService.listAll();
+		PageRequestModel pr = new PageRequestModel(page, size);
 		
-		return ResponseEntity.ok(users);
+		PageModel<User> pm = userService.listAllOnLazyMode(pr);
+		
+		return ResponseEntity.ok(pm);
 	}
 	
 	@PostMapping("/login")
@@ -74,9 +79,15 @@ public class UserResource {
 	}
 	
 	@GetMapping("/{id}/requests")
-	public ResponseEntity<List<Request>>listAllRequestById(@PathVariable(name = "id")Long id){
-		List<Request> requests = requestService.listAllByOwnerId(id);
-		return ResponseEntity.ok(requests);
+	public ResponseEntity<PageModel<Request>>listAllRequestById(
+			@PathVariable(name = "id")Long id,
+			@RequestParam(name = "size") int size,
+			@RequestParam(value = "page") int page){
+		
+		PageRequestModel pr = new PageRequestModel(page, size);
+		PageModel<Request> pm = requestService.listAllByOwnerIdOnLazyModel(id, pr);
+		
+		return ResponseEntity.ok(pm);
 	}
 	
 }

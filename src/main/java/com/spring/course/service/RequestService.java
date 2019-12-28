@@ -4,11 +4,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.spring.course.domain.Request;
+import com.spring.course.domain.User;
 import com.spring.course.enums.RequestState;
 import com.spring.course.exception.NotFoundException;
+import com.spring.course.model.PageModel;
+import com.spring.course.model.PageRequestModel;
 import com.spring.course.repository.RequestRepository;
 
 @Service
@@ -48,6 +54,18 @@ public class RequestService {
 		return requests;
 	}
 	
+	public PageModel<Request> listAllOnLazyMode(PageRequestModel pr){
+		
+		Pageable pageable = PageRequest.of(pr.getPage(), pr.getSize());
+		
+		Page<Request> page = requestRepository.findAll(pageable);
+		
+		PageModel<Request> pm = new PageModel<>((int)page.getTotalElements(), page.getSize(), page.getTotalPages(), page.getContent());
+		
+		return pm;
+		
+	}	
+	
 	public List<Request>listAllByOwnerId(Long ownerId){
 		
 		List<Request> request = requestRepository.findAllByOwnerId(ownerId);
@@ -55,4 +73,16 @@ public class RequestService {
 		return request;
 	}
 	
+	public PageModel<Request> listAllByOwnerIdOnLazyModel(Long ownerId, PageRequestModel pr){
+		
+		Pageable pegeable = PageRequest.of(pr.getPage(), pr.getSize());
+		
+		Page <Request> page = requestRepository.findAllByOwnerId(ownerId, pegeable);
+		
+		PageModel<Request> pm = new PageModel<>((int)page.getTotalElements(), page.getSize(), page.getTotalPages(), page.getContent());
+		
+		return pm;
+	}
+
+
 }
